@@ -4,17 +4,19 @@ class PasswordTextField extends StatelessWidget {
   const PasswordTextField({
     Key? key,
     required this.controller,
-    required this.onFieldSubmitted,
     required this.obscureText,
     required this.onPressed,
     required this.icon,
+    this.onFieldSubmitted,
+    this.focusNode,
   }) : super(key: key);
 
   final TextEditingController? controller;
-  final Function(String) onFieldSubmitted;
   final bool obscureText;
   final Function() onPressed;
   final IconData icon;
+  final Function(String)? onFieldSubmitted;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,8 @@ class PasswordTextField extends StatelessWidget {
       controller: controller,
       keyboardType: TextInputType.visiblePassword,
       obscureText: obscureText,
+      onFieldSubmitted: onFieldSubmitted,
+      focusNode: focusNode,
       validator: (value) {
         if (value!.isEmpty) {
           return "Password must not be empty";
@@ -33,12 +37,10 @@ class PasswordTextField extends StatelessWidget {
           return null;
         }
       },
-      onFieldSubmitted: onFieldSubmitted,
       decoration: InputDecoration(
-        isDense: true,
         filled: true,
-        hintText: 'Enter your password',
         contentPadding: const EdgeInsets.all(8),
+        hintText: 'Enter your password',
         suffixIcon: IconButton(onPressed: onPressed, icon: Icon(icon)),
       ),
     );

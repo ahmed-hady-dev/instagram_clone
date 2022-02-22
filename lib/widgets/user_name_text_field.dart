@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
 
-class EmailTextField extends StatelessWidget {
-  const EmailTextField({
+class UserNameTextField extends StatelessWidget {
+  const UserNameTextField({
     Key? key,
     required this.controller,
-    this.onFieldSubmitted,
+    required this.onFieldSubmitted,
   }) : super(key: key);
-
   final TextEditingController? controller;
   final Function(String)? onFieldSubmitted;
-
   @override
   Widget build(BuildContext context) {
     return TextFormField(
         controller: controller,
         keyboardType: TextInputType.emailAddress,
-        onFieldSubmitted: onFieldSubmitted,
-        decoration:
-            const InputDecoration(hintText: 'Enter your email', filled: true),
+        decoration: const InputDecoration(hintText: 'Enter your username'),
         validator: (value) {
           if (value!.isEmpty) {
-            return "Email must not be empty";
-          } else if (!value.contains('@')) {
-            return "Please enter a valid email!";
+            return "username must not be empty";
           } else {
             return null;
           }
-        });
+        },
+        onFieldSubmitted: onFieldSubmitted);
   }
 }
