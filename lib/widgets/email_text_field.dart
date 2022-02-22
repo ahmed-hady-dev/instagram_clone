@@ -5,10 +5,12 @@ class EmailTextField extends StatelessWidget {
     Key? key,
     required this.controller,
     this.onFieldSubmitted,
+    this.focusNode,
   }) : super(key: key);
 
   final TextEditingController? controller;
   final Function(String)? onFieldSubmitted;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +18,8 @@ class EmailTextField extends StatelessWidget {
         controller: controller,
         keyboardType: TextInputType.emailAddress,
         onFieldSubmitted: onFieldSubmitted,
-        decoration:
-            const InputDecoration(hintText: 'Enter your email', filled: true),
+        focusNode: focusNode,
+        decoration: const InputDecoration(hintText: 'Enter your email'),
         validator: (value) {
           if (value!.isEmpty) {
             return "Email must not be empty";

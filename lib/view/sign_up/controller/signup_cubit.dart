@@ -20,10 +20,13 @@ class SignupCubit extends Cubit<SignupState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController userNameController = TextEditingController();
-  TextEditingController bioController = TextEditingController();
+  FocusNode emailFocusNode = FocusNode(),
+      passwordFocusNode = FocusNode(),
+      bioFocusNode = FocusNode();
+  TextEditingController emailController = TextEditingController(),
+      passwordController = TextEditingController(),
+      userNameController = TextEditingController(),
+      bioController = TextEditingController();
 
 //===============================================================
   void changePasswordVisibility() {
@@ -65,6 +68,9 @@ class SignupCubit extends Cubit<SignupState> {
     bioController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    bioFocusNode.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
     return super.close();
   }
 }

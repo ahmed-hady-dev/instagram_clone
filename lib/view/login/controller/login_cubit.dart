@@ -50,6 +50,7 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> close() {
     emailController.dispose();
     passwordController.dispose();
+    passwordFocusNode.dispose();
     return super.close();
   }
 }

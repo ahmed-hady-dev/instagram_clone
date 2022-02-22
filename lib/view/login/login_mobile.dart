@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:instagram_clone/constants/app_colors.dart';
 import 'package:instagram_clone/core/router/router.dart';
+import 'package:instagram_clone/view/home/home_view.dart';
+import 'package:instagram_clone/view/login/component/instagram_image.dart';
 import 'package:instagram_clone/view/login/controller/login_cubit.dart';
-import 'package:instagram_clone/view/sign_up/sign_up_view.dart';
+import 'package:instagram_clone/view/login/component/sign_up_row.dart';
+import 'package:instagram_clone/widgets/custom_snack_bar.dart';
 import 'package:instagram_clone/widgets/email_text_field.dart';
+import 'package:instagram_clone/widgets/loading_widget.dart';
+import 'package:instagram_clone/widgets/main_button.dart';
 import 'package:instagram_clone/widgets/password_text_field.dart';
 
 class LoginMobile extends StatelessWidget {
@@ -18,7 +21,18 @@ class LoginMobile extends StatelessWidget {
         body: BlocProvider(
           create: (context) => LoginCubit(),
           child: BlocConsumer<LoginCubit, LoginState>(
-            listener: (context, state) {},
+            listener: (context, state) {
+              if (state is LoginFailedState) {
+                showSnackBar(
+                    msg: state.msg, snackBarStates: SnackBarStates.error);
+              }
+              if (state is LoginSuccessState) {
+                showSnackBar(
+                    msg: 'Login Successfully',
+                    snackBarStates: SnackBarStates.success);
+                MagicRouter.navigateAndPopAll(const HomeView());
+              }
+            },
             builder: (context, state) {
               final cubit = LoginCubit.get(context);
               return Form(
@@ -28,55 +42,37 @@ class LoginMobile extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 32.0),
                     shrinkWrap: true,
                     children: [
-                      SvgPicture.asset('assets/images/ic_instagram.svg',
-                          color: AppColors.primaryColor, height: 64.0),
+                      const InstagramImage(),
                       const SizedBox(height: 64),
                       EmailTextField(
                           controller: cubit.emailController,
-                          onFieldSubmitted: (s) {}),
+                          onFieldSubmitted: (_) =>
+                              cubit.passwordFocusNode.requestFocus()),
                       const SizedBox(height: 24),
                       PasswordTextField(
                           controller: cubit.passwordController,
-                          onFieldSubmitted: (p0) {},
                           obscureText: cubit.isPassword,
                           onPressed: cubit.changePasswordVisibility,
-                          icon: cubit.suffix),
+                          icon: cubit.suffix,
+                          focusNode: cubit.passwordFocusNode,
+                          onFieldSubmitted: (_) {
+                            FocusScope.of(context).unfocus();
+                            cubit.loginWithEmail();
+                          }),
                       const SizedBox(height: 24),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: AppColors.blueColor, // background
-                              onPrimary: Colors.white, // foreground
-                            ),
-                            onPressed: () {},
-                            child: const Text('Log in')),
+                      MainButton(
+                        onPressed: () {
+                          cubit.loginWithEmail();
+                          FocusScope.of(context).unfocus();
+                        },
+                        child: state is LoginLoadingState
+                            ? const LoadingWidget()
+                            : const Text('Login',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16)),
                       ),
                       const SizedBox(height: 12),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                child: const Text('Don\'t have an account?'),
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8)),
-                            GestureDetector(
-                              onTap: () => MagicRouter.navigateAndPopAll(
-                                  const SignUpView()),
-                              child: Container(
-                                  child: const Text(
-                                    ' Signup.',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8)),
-                            ),
-                          ],
-                        ),
-                      ),
+                      const SignUpRow(),
                     ],
                   ),
                 ),

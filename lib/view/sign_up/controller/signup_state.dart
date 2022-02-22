@@ -10,7 +10,10 @@ class SignUpLoadingState extends SignupState {}
 
 class SignUpSuccessState extends SignupState {}
 
-class SignUpFailedState extends SignupState {}
+class SignUpFailedState extends SignupState {
+  final String msg;
+  SignUpFailedState({required this.msg});
+}
 //===============================================================
 
 class RegisterChangePasswordVisibilityState extends SignupState {}

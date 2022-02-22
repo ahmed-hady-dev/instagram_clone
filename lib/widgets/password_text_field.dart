@@ -38,8 +38,6 @@ class PasswordTextField extends StatelessWidget {
         }
       },
       decoration: InputDecoration(
-        filled: true,
-        contentPadding: const EdgeInsets.all(8),
         hintText: 'Enter your password',
         suffixIcon: IconButton(onPressed: onPressed, icon: Icon(icon)),
       ),

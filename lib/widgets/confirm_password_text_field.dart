@@ -42,7 +42,6 @@ class ConfirmPasswordTextField extends StatelessWidget {
         },
         decoration: InputDecoration(
           hintText: 'Confirm your password',
-          filled: true,
           suffixIcon: IconButton(onPressed: onPressed, icon: Icon(icon)),
         ),
       ),
