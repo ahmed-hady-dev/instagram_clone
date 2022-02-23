@@ -5,12 +5,12 @@ import 'package:instagram_clone/constants/app_colors.dart';
 class MainButton extends StatelessWidget {
   const MainButton({
     Key? key,
-    this.onPressed,
+    required this.onPressed,
     this.primary = AppColors.blueColor,
     this.onPrimary = Colors.white,
     required this.child,
   }) : super(key: key);
-  final void Function()? onPressed;
+  final Function onPressed;
   final Color? primary;
   final Color? onPrimary;
   final Widget child;
@@ -23,7 +23,7 @@ class MainButton extends StatelessWidget {
                 primary: primary, onPrimary: onPrimary),
             onPressed: () {
               HapticFeedback.vibrate();
-              onPressed;
+              onPressed();
             },
             child: child));
   }

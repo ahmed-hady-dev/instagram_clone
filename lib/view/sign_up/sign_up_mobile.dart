@@ -38,6 +38,11 @@ class SignUpMobile extends StatelessWidget {
             },
             builder: (context, state) {
               final cubit = SignupCubit.get(context);
+              void signUp() {
+                FocusScope.of(context).unfocus();
+                cubit.signUpWithEmail();
+              }
+
               return Form(
                 key: cubit.formKey,
                 child: Center(
@@ -49,28 +54,34 @@ class SignUpMobile extends StatelessWidget {
                           onPressed: cubit.pickProfileImage,
                           image: cubit.image),
                       const SizedBox(height: 64),
-                      UserNameTextField(controller: cubit.userNameController),
+                      UserNameTextField(
+                          controller: cubit.userNameController,
+                          onFieldSubmitted: (_) =>
+                              cubit.emailFocusNode.requestFocus()),
                       const SizedBox(height: 24),
                       EmailTextField(
-                          controller: cubit.emailController,
-                          focusNode: cubit.emailFocusNode),
+                        controller: cubit.emailController,
+                        focusNode: cubit.emailFocusNode,
+                        onFieldSubmitted: (_) =>
+                            cubit.passwordFocusNode.requestFocus(),
+                      ),
                       const SizedBox(height: 24),
                       PasswordTextField(
                           controller: cubit.passwordController,
                           obscureText: cubit.isPassword,
                           onPressed: cubit.changePasswordVisibility,
                           focusNode: cubit.passwordFocusNode,
-                          icon: cubit.suffix),
+                          icon: cubit.suffix,
+                          onFieldSubmitted: (_) =>
+                              cubit.bioFocusNode.requestFocus()),
                       const SizedBox(height: 24),
                       BioTextField(
                           controller: cubit.bioController,
-                          focusNode: cubit.bioFocusNode),
+                          focusNode: cubit.bioFocusNode,
+                          onFieldSubmitted: (_) => signUp()),
                       const SizedBox(height: 24),
                       MainButton(
-                          onPressed: () {
-                            // cubit.signUpWithEmail();
-                            FocusScope.of(context).unfocus();
-                          },
+                          onPressed: signUp,
                           child: state is SignUpLoadingState
                               ? const LoadingWidget()
                               : const Text('SignUp',

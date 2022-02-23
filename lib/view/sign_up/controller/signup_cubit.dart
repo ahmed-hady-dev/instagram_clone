@@ -2,10 +2,13 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram_clone/widgets/custom_toast.dart';
+import 'package:instagram_clone/constants/constants.dart';
+import 'package:instagram_clone/view/sign_up/model/user_model.dart';
+import 'package:instagram_clone/widgets/custom_snack_bar.dart';
 
 part 'signup_state.dart';
 
@@ -15,9 +18,9 @@ class SignupCubit extends Cubit<SignupState> {
 //===============================================================
   bool isPassword = true;
   Uint8List? image;
-  final picker = ImagePicker();
   IconData suffix = Icons.visibility_outlined;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseStorage _fireStorage = FirebaseStorage.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   FocusNode emailFocusNode = FocusNode(),
@@ -37,37 +40,81 @@ class SignupCubit extends Cubit<SignupState> {
   }
 
 //===============================================================
-//   Future<String> signUpUser({required Uint8List file}) async {
-//     UserCredential credential = await _auth.createUserWithEmailAndPassword(
-//         email: emailController.text.trim().toString(),
-//         password: passwordController.text.trim().toString());
-//     print(credential.user!.email.toString());
-//     await _fireStore.collection('users').doc(credential.user!.uid).set({
-//       'bio': bioController.text.trim().toString(),
-//       'email': emailController.text.trim().toString(),
-//       'uid': credential.user!.uid,
-//       'userName': userNameController.text.trim().toString(),
-//       'followers': [],
-//       'following': [],
-//     });
-//   }
+  void signUpWithEmail() async {
+    emit(SignUpLoadingState());
+    try {
+      if (!formKey.currentState!.validate()) {
+        emit(SignupInitial());
+        return;
+      }
+      String? photoUrl;
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+              email: emailController.text.trim().toLowerCase(),
+              password: passwordController.text.trim());
+      if (image != null) {
+        photoUrl = await uploadImageToStorage(
+            childName: AppConstants.profilePics, file: image);
+      }
+      final userModel = UserModel(
+        uid: userCredential.user!.uid,
+        email: emailController.text.trim().toLowerCase(),
+        bio: bioController.text.trim(),
+        name: userNameController.text.trim(),
+        photoUrl: photoUrl ?? '',
+        followers: [],
+        following: [],
+      );
+      await _fireStore
+          .collection(AppConstants.users)
+          .doc(userCredential.user!.uid)
+          .set(userModel.toJson());
+      emit(SignUpSuccessState());
+    } on FirebaseAuthException catch (e) {
+      emit(SignUpFailedState(msg: e.message.toString()));
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrint(s.toString());
+      emit(SignUpFailedState(msg: e.toString()));
+    }
+  }
 
   //===============================================================
   Future pickProfileImage() async {
+    final picker = ImagePicker();
     XFile? _file = await picker.pickImage(source: ImageSource.gallery);
     if (_file != null) {
+      image = await _file.readAsBytes();
+      emit(ProfileImagePickedSuccessState());
       return await _file.readAsBytes();
     }
-    showToast(msg: 'there is no image selected', state: ToastedStates.error);
+    showSnackBar(
+        msg: 'there is no image selected',
+        snackBarStates: SnackBarStates.error);
+    emit(ProfileImagePickedFailedState());
+  }
+
+  //===============================================================
+  Future<String> uploadImageToStorage({
+    required String childName,
+    Uint8List? file,
+    bool isPost = false,
+  }) async {
+    Reference ref =
+        _fireStorage.ref().child(childName).child(_auth.currentUser!.uid);
+    UploadTask uploadTask = ref.putData(file!);
+    TaskSnapshot snap = await uploadTask;
+    String downloadUrl = await snap.ref.getDownloadURL();
+    return downloadUrl;
   }
 
 //===============================================================
   @override
   Future<void> close() {
+    userNameController.dispose();
     passwordController.dispose();
     bioController.dispose();
     emailController.dispose();
-    passwordController.dispose();
     bioFocusNode.dispose();
     emailFocusNode.dispose();
     passwordFocusNode.dispose();

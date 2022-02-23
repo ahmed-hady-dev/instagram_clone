@@ -21,8 +21,7 @@ class PickImageAvatar extends StatelessWidget {
           image == null
               ? const CircleAvatar(
                   radius: 64,
-                  backgroundImage:
-                      NetworkImage('https://i.stack.imgur.com/l60Hf.png'),
+                  backgroundImage: AssetImage('assets/images/avatar.png'),
                   backgroundColor: Colors.grey)
               : CircleAvatar(
                   radius: 64,

@@ -18,7 +18,7 @@ class SignUpRow extends StatelessWidget {
               child: const Text('Don\'t have an account?'),
               padding: const EdgeInsets.symmetric(vertical: 8)),
           GestureDetector(
-            onTap: () => MagicRouter.navigateTo(const SignUpView()),
+            onTap: () => MagicRouter.navigateAndPopAll(const SignUpView()),
             child: Container(
                 child: const Text(' Signup.',
                     style: TextStyle(fontWeight: FontWeight.bold)),
