@@ -14,7 +14,7 @@ class UserNameTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
         controller: controller,
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: TextInputType.name,
         decoration: const InputDecoration(hintText: 'Enter your username'),
         focusNode: focusNode,
         validator: (value) {

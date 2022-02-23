@@ -14,7 +14,7 @@ class BioTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
         controller: controller,
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: TextInputType.text,
         focusNode: focusNode,
         decoration: const InputDecoration(
             hintText: 'Enter your bio',
