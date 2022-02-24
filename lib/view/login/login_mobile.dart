@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:instagram_clone/core/router/router.dart';
-import 'package:instagram_clone/view/home/home_view.dart';
-import 'package:instagram_clone/view/login/component/instagram_image.dart';
-import 'package:instagram_clone/view/login/controller/login_cubit.dart';
-import 'package:instagram_clone/view/login/component/sign_up_row.dart';
-import 'package:instagram_clone/widgets/custom_snack_bar.dart';
-import 'package:instagram_clone/widgets/email_text_field.dart';
-import 'package:instagram_clone/widgets/loading_widget.dart';
-import 'package:instagram_clone/widgets/main_button.dart';
-import 'package:instagram_clone/widgets/password_text_field.dart';
+import '../../core/router/router.dart';
+import '../home/home_view.dart';
+import 'component/instagram_image.dart';
+import 'controller/login_cubit.dart';
+import 'component/sign_up_row.dart';
+import '../../widgets/custom_snack_bar.dart';
+import '../../widgets/email_text_field.dart';
+import '../../widgets/loading_widget.dart';
+import '../../widgets/main_button.dart';
+import '../../widgets/password_text_field.dart';
 
 class LoginMobile extends StatelessWidget {
   const LoginMobile({Key? key}) : super(key: key);

@@ -1,8 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/core/router/router.dart';
-import 'package:instagram_clone/view/login/login_view.dart';
-import 'package:instagram_clone/widgets/main_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/responsive_helper/responsive_layout.dart';
+import 'controller/home_cubit.dart';
+import 'home_mobile.dart';
+import 'home_web.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -10,14 +11,13 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: Center(
-          child: MainButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-                MagicRouter.navigateAndPopAll(const LoginView());
-              },
-              child: Text('Signout', style: const TextStyle())),
+      child: BlocProvider(
+        create: (context) => HomeCubit()..getAndCacheUserData(),
+        child: const Scaffold(
+          body: ResponsiveLayout(
+            mobilePortrait: HomeMobile(),
+            webScreen: HomeWeb(),
+          ),
         ),
       ),
     );

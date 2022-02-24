@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:instagram_clone/constants/app_colors.dart';
+import '../constants/app_colors.dart';
 
 class MainButton extends StatelessWidget {
   const MainButton({

@@ -1,7 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/constants/app_colors.dart';
+
+import '../../../constants/app_colors.dart';
 
 class PickImageAvatar extends StatelessWidget {
   const PickImageAvatar({

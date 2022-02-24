@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/core/responsive_helper/responsive_layout.dart';
-import 'package:instagram_clone/view/sign_up/sign_up_mobile.dart';
-import 'package:instagram_clone/view/sign_up/sign_up_web.dart';
+import '../../core/responsive_helper/responsive_layout.dart';
+import 'sign_up_mobile.dart';
+import 'sign_up_web.dart';
 
 class SignUpView extends StatelessWidget {
   const SignUpView({Key? key}) : super(key: key);

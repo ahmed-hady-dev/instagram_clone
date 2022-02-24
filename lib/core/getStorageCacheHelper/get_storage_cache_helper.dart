@@ -1,5 +1,7 @@
 import 'package:get_storage/get_storage.dart';
 
+import '../../view/sign_up/model/user_model.dart';
+
 class CacheHelper {
   static final GetStorage _appBox = GetStorage();
 
@@ -45,6 +47,22 @@ class CacheHelper {
       isFirstTime = _appBox.read('isFirstTime');
     }
     return isFirstTime;
+  }
+
+  //===============================================================
+
+  static Future<void> cacheUserData({required UserModel userModel}) async =>
+      await _cacheUserData(userModel);
+
+  static Future<void> _cacheUserData(UserModel userModel) async =>
+      await _appBox.write('user', userModel.toJson());
+
+  static UserModel? get getUserInfo {
+    UserModel? userModel;
+    if (_appBox.hasData('user')) {
+      userModel = UserModel.fromJson(_appBox.read('user'));
+    }
+    return userModel;
   }
 
 //===============================================================

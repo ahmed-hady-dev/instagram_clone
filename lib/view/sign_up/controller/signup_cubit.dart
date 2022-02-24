@@ -6,9 +6,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram_clone/constants/constants.dart';
-import 'package:instagram_clone/view/sign_up/model/user_model.dart';
-import 'package:instagram_clone/widgets/custom_snack_bar.dart';
+import '../../../constants/constants.dart';
+import '../model/user_model.dart';
+import '../../../widgets/custom_snack_bar.dart';
 
 part 'signup_state.dart';
 

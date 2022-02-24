@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/constants/app_colors.dart';
-import 'package:instagram_clone/core/router/router.dart';
+import '../constants/app_colors.dart';
+import '../core/router/router.dart';
 
 showSnackBar({required String msg, required SnackBarStates snackBarStates}) {
   ScaffoldMessenger.of(MagicRouter.currentContext!).showSnackBar(SnackBar(

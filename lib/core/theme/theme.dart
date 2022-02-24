@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/constants/app_colors.dart';
+import '../../constants/app_colors.dart';
 
 ThemeData lightTheme(BuildContext context) {
   return ThemeData.light().copyWith(
@@ -53,7 +53,10 @@ ThemeData darkTheme(BuildContext context) {
       },
     ),
     scaffoldBackgroundColor: AppColors.mobileBackgroundColor,
-    colorScheme: Theme.of(context).colorScheme.copyWith(primary: Colors.grey),
+    appBarTheme: ThemeData.dark()
+        .appBarTheme
+        .copyWith(backgroundColor: AppColors.mobileBackgroundColor),
+    // colorScheme: Theme.of(context).colorScheme.copyWith(primary: Colors.grey),
     textTheme: ThemeData.dark().textTheme.apply(
           fontFamily: 'Helvetica',
         ),

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:instagram_clone/core/router/router.dart';
-import 'package:instagram_clone/view/home/home_view.dart';
-import 'package:instagram_clone/view/sign_up/component/pick_image_avatar.dart';
-import 'package:instagram_clone/view/sign_up/controller/signup_cubit.dart';
-import 'package:instagram_clone/view/sign_up/component/login_row.dart';
-import 'package:instagram_clone/widgets/bio_text_field.dart';
-import 'package:instagram_clone/widgets/custom_snack_bar.dart';
-import 'package:instagram_clone/widgets/email_text_field.dart';
-import 'package:instagram_clone/widgets/loading_widget.dart';
-import 'package:instagram_clone/widgets/main_button.dart';
-import 'package:instagram_clone/widgets/password_text_field.dart';
-import 'package:instagram_clone/widgets/user_name_text_field.dart';
+import '../../core/router/router.dart';
+import '../home/home_view.dart';
+import 'component/pick_image_avatar.dart';
+import 'controller/signup_cubit.dart';
+import 'component/login_row.dart';
+import '../../widgets/bio_text_field.dart';
+import '../../widgets/custom_snack_bar.dart';
+import '../../widgets/email_text_field.dart';
+import '../../widgets/loading_widget.dart';
+import '../../widgets/main_button.dart';
+import '../../widgets/password_text_field.dart';
+import '../../widgets/user_name_text_field.dart';
 
 class SignUpMobile extends StatelessWidget {
   const SignUpMobile({Key? key}) : super(key: key);

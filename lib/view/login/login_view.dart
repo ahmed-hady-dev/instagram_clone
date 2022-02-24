@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/core/responsive_helper/responsive_layout.dart';
+import '../../core/responsive_helper/responsive_layout.dart';
 
 import 'login_mobile.dart';
 import 'web_screen.dart';

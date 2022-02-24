@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:instagram_clone/core/getStorageCacheHelper/get_storage_cache_helper.dart';
-import 'package:instagram_clone/firebase_options.dart';
-import 'package:instagram_clone/view/home/home_view.dart';
-import 'package:instagram_clone/view/login/login_view.dart';
+import 'core/getStorageCacheHelper/get_storage_cache_helper.dart';
+import 'firebase_options.dart';
+import 'view/home/home_view.dart';
+import 'view/login/login_view.dart';
 import 'core/theme/theme.dart';
 import 'core/theme/theme_cubit.dart';
 
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
                 onGenerateRoute: onGenerateRoute,
                 themeMode: ThemeMode.dark,
                 // themeMode: themeCubit ? ThemeMode.dark : ThemeMode.light,
-                theme: lightTheme(context),
+                theme: darkTheme(context),
                 darkTheme: darkTheme(context),
                 locale: context.locale,
                 supportedLocales: context.supportedLocales,

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:instagram_clone/core/getStorageCacheHelper/get_storage_cache_helper.dart';
+import '../getStorageCacheHelper/get_storage_cache_helper.dart';
 import 'package:meta/meta.dart';
 
 part 'theme_state.dart';

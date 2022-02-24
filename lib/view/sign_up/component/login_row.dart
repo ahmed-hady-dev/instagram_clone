@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/core/router/router.dart';
-import 'package:instagram_clone/view/login/login_view.dart';
+import '../../../core/router/router.dart';
+import '../../login/login_view.dart';
 
 class LoginRow extends StatelessWidget {
   const LoginRow({
