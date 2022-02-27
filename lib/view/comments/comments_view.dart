@@ -42,9 +42,8 @@ class CommentsView extends StatelessWidget {
               }
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
-                itemBuilder: (ctx, index) => CommentCard(
-                  snap: snapshot.data!.docs[index],
-                ),
+                itemBuilder: (ctx, index) =>
+                    CommentCard(snap: snapshot.data!.docs[index]),
               );
             },
           ),
