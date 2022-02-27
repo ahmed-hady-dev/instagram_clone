@@ -27,12 +27,15 @@ class HomeCubit extends Cubit<HomeState> {
   int index = 0;
   Uint8List? file;
   UserModel? userModel;
+  int commentLen = 0;
+  bool isLikeAnimating = false;
   PageController pageController = PageController();
   final firestore = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
   final firebaseUser = FirebaseAuth.instance.currentUser;
   final FirebaseStorage fireStorage = FirebaseStorage.instance;
-  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController(),
+      commentController = TextEditingController();
   List<Widget> homeScreenItems = [
     const FeedView(),
     const SearchView(),
@@ -45,6 +48,12 @@ class HomeCubit extends Cubit<HomeState> {
     index = page;
     pageController.jumpToPage(page);
     emit(ChangePageNumber());
+  }
+
+//===============================================================
+  changeLikeAnimation() {
+    isLikeAnimating = false;
+    emit(LikeAnimationState());
   }
 
 //===============================================================
@@ -171,6 +180,7 @@ class HomeCubit extends Cubit<HomeState> {
           postUrl: photoUrl,
           profImage: userModel!.photoUrl.toString());
       firestore.collection(AppConstants.posts).doc(postId).set(post.toJson());
+      descriptionController.clear();
       emit(UploadPostSuccess());
     } on FirebaseException catch (e) {
       debugPrint(e.code.toString());
@@ -186,6 +196,37 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
 //===============================================================
+
+  Future<void> likePost(
+      {required String postId,
+      required String uid,
+      required List likes}) async {
+    emit(LikePostLoading());
+    try {
+      if (likes.contains(uid)) {
+        firestore.collection(AppConstants.posts).doc(postId).update({
+          AppConstants.likes: FieldValue.arrayRemove([uid])
+        });
+      } else {
+        firestore.collection(AppConstants.posts).doc(postId).update({
+          AppConstants.likes: FieldValue.arrayUnion([uid])
+        });
+      }
+      emit(LikePostSuccess());
+    } on FirebaseException catch (e) {
+      debugPrint(e.code.toString());
+      showSnackBar(
+          msg: e.code.toString(), snackBarStates: SnackBarStates.error);
+      emit(LikePostFailed());
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrint(s.toString());
+      showSnackBar(msg: e.toString(), snackBarStates: SnackBarStates.error);
+      emit(LikePostFailed());
+    }
+  }
+//===============================================================
+
   @override
   Future<void> close() {
     pageController.dispose();

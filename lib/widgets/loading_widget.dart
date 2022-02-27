@@ -7,8 +7,11 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTheme(
-        data: CupertinoTheme.of(context).copyWith(brightness: Brightness.dark),
-        child: const CupertinoActivityIndicator());
+    return Center(
+      child: CupertinoTheme(
+          data:
+              CupertinoTheme.of(context).copyWith(brightness: Brightness.dark),
+          child: const CupertinoActivityIndicator()),
+    );
   }
 }

@@ -10,6 +10,9 @@ class ChangePageNumber extends HomeState {}
 
 //===============================================================
 class ClearImageState extends HomeState {}
+
+//===============================================================
+class LikeAnimationState extends HomeState {}
 //===============================================================
 
 class ProfileImagePickedSuccessState extends HomeState {}
@@ -37,3 +40,10 @@ class UploadPostLoading extends HomeState {}
 class UploadPostSuccess extends HomeState {}
 
 class UploadPostFailed extends HomeState {}
+//===============================================================
+
+class LikePostLoading extends HomeState {}
+
+class LikePostSuccess extends HomeState {}
+
+class LikePostFailed extends HomeState {}
