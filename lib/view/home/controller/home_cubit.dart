@@ -27,7 +27,6 @@ class HomeCubit extends Cubit<HomeState> {
   int index = 0;
   Uint8List? file;
   UserModel? userModel;
-  int commentLen = 0;
   bool isLikeAnimating = false;
   PageController pageController = PageController();
   final firestore = FirebaseFirestore.instance;
@@ -225,12 +224,54 @@ class HomeCubit extends Cubit<HomeState> {
       emit(LikePostFailed());
     }
   }
+
 //===============================================================
+  Future<void> postComment({required String postId}) async {
+    emit(AddCommentLoading());
+    try {
+      if (commentController.text.isEmpty) {
+        showSnackBar(
+            msg: 'Please enter a comment',
+            snackBarStates: SnackBarStates.error);
+        emit(HomeInitial());
+        return;
+      }
+      String commentId = const Uuid().v1();
+      firestore
+          .collection('posts')
+          .doc(postId)
+          .collection('comments')
+          .doc(commentId)
+          .set({
+        'profilePic': userModel!.photoUrl,
+        'name': userModel!.name,
+        'uid': userModel!.uid,
+        'text': commentController.text.trim(),
+        'commentId': commentId,
+        'datePublished': DateTime.now(),
+      });
+      emit(AddCommentSuccess());
+      commentController.clear();
+    } on FirebaseException catch (e) {
+      debugPrint(e.code.toString());
+      showSnackBar(
+          msg: e.code.toString(), snackBarStates: SnackBarStates.error);
+      emit(AddCommentFailed());
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrint(s.toString());
+      showSnackBar(msg: e.toString(), snackBarStates: SnackBarStates.error);
+      emit(AddCommentFailed());
+    }
+  }
+
+  //===============================================================
 
   @override
   Future<void> close() {
     pageController.dispose();
     descriptionController.dispose();
+    commentController.dispose();
     return super.close();
   }
 }

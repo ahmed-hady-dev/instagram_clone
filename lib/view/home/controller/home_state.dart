@@ -47,3 +47,10 @@ class LikePostLoading extends HomeState {}
 class LikePostSuccess extends HomeState {}
 
 class LikePostFailed extends HomeState {}
+//===============================================================
+
+class AddCommentLoading extends HomeState {}
+
+class AddCommentSuccess extends HomeState {}
+
+class AddCommentFailed extends HomeState {}

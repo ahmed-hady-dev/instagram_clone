@@ -1,17 +1,14 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_clone/constants/app_colors.dart';
-import 'package:instagram_clone/core/router/router.dart';
-import 'package:instagram_clone/view/comments/comments_view.dart';
-import 'package:instagram_clone/view/home/controller/home_cubit.dart';
+import 'package:intl/intl.dart';
+
+import 'comments_row.dart';
 
 class PostInfoColumn extends StatelessWidget {
   const PostInfoColumn({Key? key, required this.snap}) : super(key: key);
   final snap;
   @override
   Widget build(BuildContext context) {
-    final cubit = HomeCubit.get(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -37,21 +34,7 @@ class PostInfoColumn extends StatelessWidget {
               ),
             ),
           ),
-          InkWell(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text(
-                'View all ${cubit.commentLen} comments',
-                style: const TextStyle(
-                    fontSize: 16, color: AppColors.secondaryColor),
-              ),
-            ),
-            onTap: () => MagicRouter.navigateTo(
-              BlocProvider.value(
-                  value: HomeCubit.get(context),
-                  child: CommentsView(postId: snap['postId'].toString())),
-            ),
-          ),
+          CommentsRow(snap: snap),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Text(

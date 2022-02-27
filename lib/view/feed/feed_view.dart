@@ -27,17 +27,15 @@ class FeedView extends StatelessWidget {
             return StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection(AppConstants.posts)
+                  .orderBy('datePublished', descending: true)
                   .snapshots(),
               builder: (context,
                   AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                // if (snapshot.connectionState == ConnectionState.waiting) {
-                //   return const LoadingWidget();
-                // }
                 final userModel = HomeCubit.get(context).userModel;
                 return userModel == null
                     ? const LoadingWidget()
                     : ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
+                        itemCount: snapshot.data?.docs.length,
                         itemBuilder: (ctx, index) => Container(
                           margin: EdgeInsets.symmetric(
                               horizontal:
