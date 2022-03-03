@@ -6,7 +6,7 @@ import 'comments_row.dart';
 
 class PostInfoColumn extends StatelessWidget {
   const PostInfoColumn({Key? key, required this.snap}) : super(key: key);
-  final snap;
+  final Map<String, dynamic> snap;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -14,7 +14,7 @@ class PostInfoColumn extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('${snap['likes'].length} likes',
+          Text('${snap['likes'].length ?? 0} likes',
               style: Theme.of(context)
                   .textTheme
                   .subtitle2!

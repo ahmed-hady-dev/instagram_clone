@@ -3,24 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone/view/feed/component/delete_button.dart';
 
 class UserInfoRow extends StatelessWidget {
-  final String profileImage;
-
+  final String? profileImage;
   final String userName;
-
   final String userUId;
-
   final String snapUId;
-
+  final String postId;
   const UserInfoRow(
       {Key? key,
       required this.profileImage,
       required this.userName,
       required this.userUId,
+      required this.postId,
       required this.snapUId})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    const String defaultAvatar =
+        'https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg';
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16)
           .copyWith(right: 0),
@@ -28,7 +28,8 @@ class UserInfoRow extends StatelessWidget {
         children: <Widget>[
           CircleAvatar(
             radius: 16,
-            backgroundImage: CachedNetworkImageProvider(profileImage),
+            backgroundImage:
+                CachedNetworkImageProvider(profileImage ?? defaultAvatar),
           ),
           Expanded(
             child: Padding(
@@ -43,7 +44,7 @@ class UserInfoRow extends StatelessWidget {
               ),
             ),
           ),
-          snapUId == userUId ? const DeleteButton() : Container(),
+          snapUId == userUId ? DeleteButton(postId: postId) : Container(),
         ],
       ),
     );

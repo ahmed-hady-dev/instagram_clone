@@ -63,7 +63,6 @@ class MyApp extends StatelessWidget {
         ],
         child: BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, state) {
-            var themeCubit = ThemeCubit.get(context).isDark;
             return MaterialApp(
                 title: 'Instagram Clone',
                 debugShowCheckedModeBanner: false,

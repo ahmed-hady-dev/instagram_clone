@@ -27,7 +27,6 @@ class HomeCubit extends Cubit<HomeState> {
   int index = 0;
   Uint8List? file;
   UserModel? userModel;
-  bool isLikeAnimating = false;
   PageController pageController = PageController();
   final firestore = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
@@ -50,10 +49,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
 //===============================================================
-  changeLikeAnimation() {
-    isLikeAnimating = false;
-    emit(LikeAnimationState());
-  }
+  changeLikeAnimation() => emit(LikeAnimationState());
 
 //===============================================================
   Future<UserModel?> getUserData() async {
@@ -178,7 +174,10 @@ class HomeCubit extends Cubit<HomeState> {
           datePublished: DateTime.now(),
           postUrl: photoUrl,
           profImage: userModel!.photoUrl.toString());
-      firestore.collection(AppConstants.posts).doc(postId).set(post.toJson());
+      await firestore
+          .collection(AppConstants.posts)
+          .doc(postId)
+          .set(post.toJson());
       descriptionController.clear();
       emit(UploadPostSuccess());
     } on FirebaseException catch (e) {
@@ -203,11 +202,11 @@ class HomeCubit extends Cubit<HomeState> {
     emit(LikePostLoading());
     try {
       if (likes.contains(uid)) {
-        firestore.collection(AppConstants.posts).doc(postId).update({
+        await firestore.collection(AppConstants.posts).doc(postId).update({
           AppConstants.likes: FieldValue.arrayRemove([uid])
         });
       } else {
-        firestore.collection(AppConstants.posts).doc(postId).update({
+        await firestore.collection(AppConstants.posts).doc(postId).update({
           AppConstants.likes: FieldValue.arrayUnion([uid])
         });
       }
@@ -237,7 +236,7 @@ class HomeCubit extends Cubit<HomeState> {
         return;
       }
       String commentId = const Uuid().v1();
-      firestore
+      await firestore
           .collection('posts')
           .doc(postId)
           .collection('comments')
@@ -265,6 +264,24 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  //===============================================================
+  Future<void> deletePost({required String postId}) async {
+    emit(DeletePostLoading());
+    try {
+      await firestore.collection(AppConstants.posts).doc(postId).delete();
+      emit(DeletePostSuccess());
+    } on FirebaseException catch (e) {
+      debugPrint(e.code.toString());
+      showSnackBar(
+          msg: e.code.toString(), snackBarStates: SnackBarStates.error);
+      emit(DeletePostFailed());
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrint(s.toString());
+      showSnackBar(msg: e.toString(), snackBarStates: SnackBarStates.error);
+      emit(DeletePostFailed());
+    }
+  }
   //===============================================================
 
   @override

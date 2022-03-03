@@ -10,8 +10,8 @@ import 'package:instagram_clone/view/home/controller/home_cubit.dart';
 import 'package:instagram_clone/widgets/loading_widget.dart';
 
 class CommentsView extends StatelessWidget {
-  const CommentsView({Key? key, this.postId}) : super(key: key);
-  final postId;
+  const CommentsView({Key? key, required this.postId}) : super(key: key);
+  final String postId;
   @override
   Widget build(BuildContext context) {
     final cubit = HomeCubit.get(context);

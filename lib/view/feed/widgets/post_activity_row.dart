@@ -8,7 +8,7 @@ import 'package:instagram_clone/view/home/controller/home_cubit.dart';
 
 class PostActivityRow extends StatelessWidget {
   const PostActivityRow({Key? key, required this.snap}) : super(key: key);
-  final snap;
+  final Map<String, dynamic> snap;
   @override
   Widget build(BuildContext context) {
     final cubit = HomeCubit.get(context);

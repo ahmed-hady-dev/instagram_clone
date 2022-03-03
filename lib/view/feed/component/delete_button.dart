@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/core/router/router.dart';
+import 'package:instagram_clone/view/home/controller/home_cubit.dart';
 
 class DeleteButton extends StatelessWidget {
   const DeleteButton({
     Key? key,
+    required this.postId,
   }) : super(key: key);
-
+  final String postId;
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -20,11 +22,8 @@ class DeleteButton extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                       child: Text('Delete')),
-                  onTap: () {
-                    // deletePost(
-                    //   snap['postId']
-                    //       .toString(),
-                    // );
+                  onTap: () async {
+                    await HomeCubit().deletePost(postId: postId);
                     MagicRouter.pop();
                   }),
             );

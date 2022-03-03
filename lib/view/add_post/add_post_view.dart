@@ -33,7 +33,12 @@ class AddPostView extends StatelessWidget {
                     leading: IconButton(
                         icon: const Icon(Icons.arrow_back),
                         onPressed: cubit.clearImage),
-                    actions: <Widget>[PostButton(onPressed: cubit.uploadPost)]),
+                    actions: <Widget>[
+                      PostButton(onPressed: () async {
+                        await cubit.uploadPost();
+                        cubit.pageController.jumpToPage(0);
+                      })
+                    ]),
                 body: Column(
                   children: <Widget>[
                     state is UploadPostLoading

@@ -54,3 +54,10 @@ class AddCommentLoading extends HomeState {}
 class AddCommentSuccess extends HomeState {}
 
 class AddCommentFailed extends HomeState {}
+//===============================================================
+
+class DeletePostLoading extends HomeState {}
+
+class DeletePostSuccess extends HomeState {}
+
+class DeletePostFailed extends HomeState {}

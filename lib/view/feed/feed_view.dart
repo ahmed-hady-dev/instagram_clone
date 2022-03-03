@@ -24,27 +24,35 @@ class FeedView extends StatelessWidget {
         appBar: width > kWebBreakPoint ? null : buildAppBar(),
         body: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
+            final cubit = HomeCubit.get(context);
             return StreamBuilder(
-              stream: FirebaseFirestore.instance
+              stream: cubit.firestore
                   .collection(AppConstants.posts)
                   .orderBy('datePublished', descending: true)
                   .snapshots(),
               builder: (context,
                   AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                final userModel = HomeCubit.get(context).userModel;
-                return userModel == null
-                    ? const LoadingWidget()
-                    : ListView.builder(
-                        itemCount: snapshot.data?.docs.length,
-                        itemBuilder: (ctx, index) => Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal:
-                                  width > kWebBreakPoint ? width * 0.3 : 0,
-                              vertical: width > kWebBreakPoint ? 15 : 0),
-                          child:
-                              PostCard(snap: snapshot.data?.docs[index].data()),
-                        ),
-                      );
+                final userModel = cubit.userModel;
+                if (userModel == null) {
+                  return const LoadingWidget();
+                }
+                return ListView.builder(
+                  itemCount: snapshot.data?.docs.length ?? 0,
+                  itemBuilder: (ctx, index) {
+                    if (snapshot.data?.docs[index].data() == null) {
+                      return const LoadingWidget();
+                    }
+                    return Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: width > kWebBreakPoint ? width * 0.3 : 0,
+                          vertical: width > kWebBreakPoint ? 15 : 0),
+                      child: PostCard(
+                          snap: snapshot.data?.docs[index].data() ??
+                              <String, dynamic>{},
+                          index: index),
+                    );
+                  },
+                );
               },
             );
           },

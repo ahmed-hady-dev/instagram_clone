@@ -8,8 +8,8 @@ import 'package:instagram_clone/view/comments/comments_view.dart';
 import 'package:instagram_clone/view/home/controller/home_cubit.dart';
 
 class CommentsRow extends StatelessWidget {
-  const CommentsRow({Key? key, this.snap}) : super(key: key);
-  final snap;
+  const CommentsRow({Key? key, required this.snap}) : super(key: key);
+  final Map<String, dynamic> snap;
   @override
   Widget build(BuildContext context) {
     return InkWell(

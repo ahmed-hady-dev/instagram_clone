@@ -5,19 +5,30 @@ import 'package:instagram_clone/view/feed/component/like_animation.dart';
 import 'package:instagram_clone/view/home/controller/home_cubit.dart';
 import 'package:instagram_clone/widgets/loading_widget.dart';
 
-class PostImage extends StatelessWidget {
-  const PostImage({Key? key, required this.snap}) : super(key: key);
-  final snap;
+class PostImage extends StatefulWidget {
+  const PostImage({Key? key, required this.snap, required this.index})
+      : super(key: key);
+  final Map<String, dynamic> snap;
+  final int index;
+  @override
+  State<PostImage> createState() => _PostImageState();
+}
+
+bool isLikeAnimating = false;
+
+class _PostImageState extends State<PostImage> {
   @override
   Widget build(BuildContext context) {
     final cubit = HomeCubit.get(context);
     return GestureDetector(
       onDoubleTap: () {
-        cubit.isLikeAnimating = true;
+        // print(widget.snap.toString());
+        print(widget.index);
+        isLikeAnimating = true;
         cubit.likePost(
-            postId: snap['postId'].toString(),
+            postId: widget.snap['postId'].toString(),
             uid: HomeCubit.get(context).userModel!.uid.toString(),
-            likes: snap[AppConstants.likes]);
+            likes: widget.snap[AppConstants.likes]);
       },
       child: Stack(
         alignment: Alignment.center,
@@ -26,7 +37,7 @@ class PostImage extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
             child: CachedNetworkImage(
-              imageUrl: snap['postUrl'].toString(),
+              imageUrl: widget.snap['postUrl'].toString(),
               fit: BoxFit.cover,
               progressIndicatorBuilder: (context, url, downloadProgress) =>
                   const LoadingWidget(),
@@ -35,12 +46,15 @@ class PostImage extends StatelessWidget {
           ),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
-            opacity: cubit.isLikeAnimating ? 1 : 0,
+            opacity: isLikeAnimating ? 1 : 0,
             child: LikeAnimation(
-              isAnimating: cubit.isLikeAnimating,
+              isAnimating: isLikeAnimating,
               child: const Icon(Icons.favorite, color: Colors.white, size: 100),
               duration: const Duration(milliseconds: 400),
-              onEnd: cubit.changeLikeAnimation,
+              onEnd: () {
+                isLikeAnimating = false;
+                cubit.changeLikeAnimation();
+              },
             ),
           ),
         ],
