@@ -27,12 +27,14 @@ class HomeCubit extends Cubit<HomeState> {
   int index = 0;
   Uint8List? file;
   UserModel? userModel;
+  bool isShowUsers = false;
   PageController pageController = PageController();
   final firestore = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
   final firebaseUser = FirebaseAuth.instance.currentUser;
   final FirebaseStorage fireStorage = FirebaseStorage.instance;
   final TextEditingController descriptionController = TextEditingController(),
+      searchController = TextEditingController(),
       commentController = TextEditingController();
   List<Widget> homeScreenItems = [
     const FeedView(),
@@ -289,6 +291,7 @@ class HomeCubit extends Cubit<HomeState> {
     pageController.dispose();
     descriptionController.dispose();
     commentController.dispose();
+    searchController.dispose();
     return super.close();
   }
 }
